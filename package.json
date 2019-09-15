@@ -20,5 +20,11 @@
   "devDependencies": {
     "ts-node": "^8.3.0",
     "typescript": "^3.6.3"
+  },
+  "dependencies": {
+    "@slack/web-api": "^5.1.0",
+    "@types/zen-observable": "^0.8.0",
+    "spinnies": "^0.5.0",
+    "zen-observable": "^0.8.14"
   }
 }
