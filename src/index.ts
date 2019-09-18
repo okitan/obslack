@@ -51,7 +51,7 @@ export class ObSlack {
     callback?: (
       observer: ZenObservable.SubscriptionObserver<ChatMessageBody>
     ) => void;
-  }): Promise<void> {
+  }): Promise<ObSlack> {
     const messageThread = new ObSlack({
       client: this.client,
       consoleManager: this.consoleManager
@@ -72,6 +72,8 @@ export class ObSlack {
     } else {
       messageThread.finish();
     }
+
+    return messageThread;
   }
 
   async init(message: ChatPostMessageArguments): Promise<void> {
