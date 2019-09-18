@@ -41,19 +41,23 @@ export class ObSlack {
 
   async start({
     channel,
+    thread,
     message,
     update = true,
     callback
   }: {
     channel: string;
-    message: ChatMessageBody;
     update?: boolean;
     callback?: (
       observer: ZenObservable.SubscriptionObserver<ChatMessageBody>
     ) => void;
-  }): Promise<ObSlack> {
+  } & NAND<{ thread?: string }, { message: ChatMessageBody }>): Promise<
+    ObSlack
+  > {
     const messageThread = new ObSlack({
       client: this.client,
+      channel,
+      thread,
       consoleManager: this.consoleManager
     });
 
