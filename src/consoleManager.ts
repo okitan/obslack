@@ -1,5 +1,6 @@
 import Spinnies from "spinnies";
 import { ChatPostMessageArguments } from "@slack/web-api";
+import { KnownBlock } from "@slack/types";
 
 import { ChatMessageBody } from "./types/slack";
 
@@ -65,7 +66,12 @@ export class ConsoleManager {
     const lines: string[] = [];
 
     if (message.blocks) {
-      // TODO:
+      lines.push(
+        ...message.blocks.map((block, _) =>
+          // casting to KnownBlock is avoiding Block
+          this.renderBlock(block as KnownBlock)
+        )
+      );
     } else {
       lines.push(message.text);
     }
@@ -77,6 +83,22 @@ export class ConsoleManager {
     return lines
       .map(line => " ".repeat(2 * (indent as number)) + line)
       .join("\n");
+  }
+
+  renderBlock(block: KnownBlock): string {
+    switch (block.type) {
+      case "divider":
+        return "-".repeat(80);
+      case "section":
+        // TODO: fields, accessory
+        if (block.text) {
+          return block.text.text;
+        }
+        return "";
+      default:
+        console.error(`unknown type ${block.type} found`);
+        return "";
+    }
   }
 
   finish({ thread }: { thread: string }): void {
