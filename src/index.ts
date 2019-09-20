@@ -9,7 +9,8 @@ import {
   SuccessfulChatPostMessageResponse
 } from "./types/slack";
 
-export { ChatMessageBody } from "./types/slack";
+export * from "./helpers/slack";
+export * from "./types/slack";
 
 export class ObSlack {
   client?: WebClient;
