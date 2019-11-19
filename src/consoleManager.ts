@@ -18,12 +18,13 @@ export class ConsoleManager {
     this.threads = {};
   }
 
-  addThread({ thread, ...message }: { thread?: string } & ChatPostMessageArguments): string {
+  createThread({ thread, ...message }: { thread?: string } & ChatPostMessageArguments): string {
     thread = thread || `thread-${Object.keys(this.threads).length}`; // XXX: more robust unique logic
 
     const messages: Messages = [message];
     this.threads[thread] = messages;
 
+    // update works?
     this.spinnies.add(thread, { text: this.renderMessages(messages) });
 
     return thread;

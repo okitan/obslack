@@ -15,8 +15,9 @@ export type ChatMessageBody = Partial<ChatPostMessageArguments> & {
 export type SuccessfulChatPostMessageResponse = WebAPICallResult & {
   ok: true;
 
-  channel: string;
   ts: string;
+  channel: string;
+
   message: {
     [x: string]: unknown; // TODO:
   };

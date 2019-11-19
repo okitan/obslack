@@ -2,33 +2,28 @@ import Observable from "zen-observable";
 import { WebClient, ChatPostMessageArguments } from "@slack/web-api";
 
 import { ConsoleManager } from "./consoleManager";
+import { SlackManager } from "./slackManager";
 
 import { NAND } from "./types/logical";
-import { ChatMessageBody, SuccessfulChatPostMessageResponse } from "./types/slack";
+import { ChatMessageBody } from "./types/slack";
 
 export * from "./helpers/slack";
 export * from "./types/slack";
 
 export class ObSlack {
   client?: WebClient;
+  slackManager?: SlackManager;
   consoleManager?: ConsoleManager;
-
-  channel: string;
-  thread?: string;
 
   constructor({
     client,
-    channel = "",
-    thread,
     ...args
   }: {
     client?: WebClient;
-    channel?: string;
-    thread?: string;
   } & NAND<{ consoleManager?: ConsoleManager }, { outputToConsole: true }>) {
     this.client = client;
-    this.channel = channel;
-    this.thread = thread;
+
+    if (client) this.slackManager = new SlackManager({ client });
 
     if (args.consoleManager) {
       this.consoleManager = args.consoleManager;
@@ -45,18 +40,23 @@ export class ObSlack {
     callback
   }: {
     channel: string;
+    thread?: string;
+    message?: ChatMessageBody;
     update?: boolean;
     callback?: (observer: ZenObservable.SubscriptionObserver<ChatMessageBody>) => void;
-  } & NAND<{ thread?: string }, { message: ChatMessageBody }>): Promise<ObSlack> {
-    const messageThread = new ObSlack({
-      client: this.client,
+  }): Promise<MessageThread> {
+    const messageThread = new MessageThread({
       channel,
-      thread,
+      slackManager: this.slackManager,
       consoleManager: this.consoleManager
     });
 
     if (message) {
-      await messageThread.init({ ...message, channel });
+      if (thread) {
+        update ? messageThread.update(message) : messageThread.follow(message);
+      } else {
+        await messageThread.init({ ...message, channel });
+      }
     }
 
     if (callback) {
@@ -71,79 +71,72 @@ export class ObSlack {
 
     return messageThread;
   }
+}
+
+export class MessageThread {
+  slackManager?: SlackManager;
+  consoleManager?: ConsoleManager;
+
+  channel: string;
+  thread?: string;
+
+  constructor({
+    channel,
+    slackManager,
+    consoleManager
+  }: {
+    channel: string;
+    slackManager?: SlackManager;
+    consoleManager?: ConsoleManager;
+  }) {
+    this.channel = channel;
+    this.slackManager = slackManager;
+    this.consoleManager = consoleManager;
+  }
 
   async init(message: ChatPostMessageArguments): Promise<void> {
-    if (this.client) {
-      const result = (await this.client.chat.postMessage(message)) as SuccessfulChatPostMessageResponse;
+    if (this.slackManager) {
+      this.slackManager.createThread(message);
+      const thread = await this.slackManager.getThread();
 
-      this.channel = result.channel;
-      this.thread = result.ts;
+      // update to slack channel id
+      this.channel = thread.channel;
+      this.thread = thread.ts;
     }
 
-    if (this.consoleManager) {
-      const thread = this.consoleManager.addThread({
-        ...message,
-        thread: this.thread
-      });
-
-      this.thread = this.thread || thread;
-    }
+    // If this.thread is not undefined, thread should be returned as is
+    this.thread = this.consoleManager?.createThread({ thread: this.thread, ...message });
   }
 
   async update(body: ChatMessageBody): Promise<void> {
     if (!this.thread) return await this.init({ ...body, channel: this.channel });
 
-    if (this.client) {
-      await this.client.chat.update({
-        ...body,
-        channel: this.channel,
-        ts: this.thread
-      });
-    }
-
-    if (this.consoleManager) {
-      this.consoleManager.update({ thread: this.thread, ...body });
-    }
+    this.slackManager?.update(body);
+    this.consoleManager?.update({ thread: this.thread, ...body });
   }
 
   async follow(body: ChatMessageBody): Promise<void> {
     if (!this.thread) return await this.init({ ...body, channel: this.channel });
 
-    if (this.client) {
-      await this.client.chat.postMessage({
-        ...body,
-        channel: this.channel,
-        thread_ts: this.thread
-      });
-    }
-
-    if (this.consoleManager) {
-      this.consoleManager.follow({ thread: this.thread, ...body });
-    }
+    this.slackManager?.follow(body);
+    this.consoleManager?.follow({ thread: this.thread, ...body });
   }
 
   async finish(): Promise<void> {
     if (!this.thread) {
-      if (this.consoleManager) {
-        this.consoleManager.terminate("stopped");
-      }
-      throw new Error("panic: no thread given");
-    }
-
-    if (this.consoleManager) {
-      this.consoleManager.finish({ thread: this.thread });
+      this.consoleManager?.terminate("stopped");
+    } else {
+      this.consoleManager?.finish({ thread: this.thread });
     }
   }
 
   async terminate(err: any): Promise<void> {
     await this.follow({ text: err });
 
-    if (this.consoleManager) {
-      if (this.thread) {
-        this.consoleManager.fail({ thread: this.thread });
-      } else {
-        this.consoleManager.terminate("fail");
-      }
+    if (this.thread) {
+      this.consoleManager?.fail({ thread: this.thread });
+    } else {
+      this.consoleManager?.terminate("fail");
     }
   }
 }

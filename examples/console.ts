@@ -13,7 +13,7 @@ import { ObSlack } from "../src";
       observer.next({ text: "will done soon" });
 
       setTimeout(() => {
-        observer.next({ text: "done" });
+        observer.next({ text: "done at last" });
         observer.complete();
       }, 3000);
     }
@@ -23,6 +23,17 @@ import { ObSlack } from "../src";
   await obs.start({
     channel: "#debug",
     message: { text: "done" }
+  });
+
+  // without initial message
+  await obs.start({
+    channel: "#sandbox",
+    callback: observer => {
+      setTimeout(() => {
+        observer.next({ text: "done later" });
+        observer.complete();
+      }, 1000);
+    }
   });
 
   // fail at last
