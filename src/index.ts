@@ -4,10 +4,7 @@ import { WebClient, ChatPostMessageArguments } from "@slack/web-api";
 import { ConsoleManager } from "./consoleManager";
 
 import { NAND } from "./types/logical";
-import {
-  ChatMessageBody,
-  SuccessfulChatPostMessageResponse
-} from "./types/slack";
+import { ChatMessageBody, SuccessfulChatPostMessageResponse } from "./types/slack";
 
 export * from "./helpers/slack";
 export * from "./types/slack";
@@ -49,12 +46,8 @@ export class ObSlack {
   }: {
     channel: string;
     update?: boolean;
-    callback?: (
-      observer: ZenObservable.SubscriptionObserver<ChatMessageBody>
-    ) => void;
-  } & NAND<{ thread?: string }, { message: ChatMessageBody }>): Promise<
-    ObSlack
-  > {
+    callback?: (observer: ZenObservable.SubscriptionObserver<ChatMessageBody>) => void;
+  } & NAND<{ thread?: string }, { message: ChatMessageBody }>): Promise<ObSlack> {
     const messageThread = new ObSlack({
       client: this.client,
       channel,
@@ -68,9 +61,7 @@ export class ObSlack {
 
     if (callback) {
       new Observable<ChatMessageBody>(callback).subscribe(
-        update
-          ? messageThread.update.bind(messageThread)
-          : messageThread.follow.bind(messageThread),
+        update ? messageThread.update.bind(messageThread) : messageThread.follow.bind(messageThread),
         messageThread.terminate.bind(messageThread),
         messageThread.finish.bind(messageThread)
       );
@@ -83,9 +74,7 @@ export class ObSlack {
 
   async init(message: ChatPostMessageArguments): Promise<void> {
     if (this.client) {
-      const result = (await this.client.chat.postMessage(
-        message
-      )) as SuccessfulChatPostMessageResponse;
+      const result = (await this.client.chat.postMessage(message)) as SuccessfulChatPostMessageResponse;
 
       this.channel = result.channel;
       this.thread = result.ts;
@@ -102,8 +91,7 @@ export class ObSlack {
   }
 
   async update(body: ChatMessageBody): Promise<void> {
-    if (!this.thread)
-      return await this.init({ ...body, channel: this.channel });
+    if (!this.thread) return await this.init({ ...body, channel: this.channel });
 
     if (this.client) {
       await this.client.chat.update({
@@ -119,8 +107,7 @@ export class ObSlack {
   }
 
   async follow(body: ChatMessageBody): Promise<void> {
-    if (!this.thread)
-      return await this.init({ ...body, channel: this.channel });
+    if (!this.thread) return await this.init({ ...body, channel: this.channel });
 
     if (this.client) {
       await this.client.chat.postMessage({

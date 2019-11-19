@@ -18,10 +18,7 @@ export class ConsoleManager {
     this.threads = {};
   }
 
-  addThread({
-    thread,
-    ...message
-  }: { thread?: string } & ChatPostMessageArguments): string {
+  addThread({ thread, ...message }: { thread?: string } & ChatPostMessageArguments): string {
     thread = thread || `thread-${Object.keys(this.threads).length}`; // XXX: more robust unique logic
 
     const messages: Messages = [message];
@@ -62,7 +59,7 @@ export class ConsoleManager {
   renderMessage({
     indent = 0,
     ...message
-  }: { indent?: number } & ChatPostMessageArguments | ChatMessageBody): string {
+  }: ({ indent?: number } & ChatPostMessageArguments) | ChatMessageBody): string {
     const lines: string[] = [];
 
     if (message.blocks) {
@@ -80,9 +77,7 @@ export class ConsoleManager {
       // TODO:
     }
 
-    return lines
-      .map(line => " ".repeat(2 * (indent as number)) + line)
-      .join("\n");
+    return lines.map(line => " ".repeat(2 * (indent as number)) + line).join("\n");
   }
 
   renderBlock(block: KnownBlock): string {
