@@ -35,7 +35,7 @@ export class ConsoleManager {
     this.threads[thread][0] = { ...message, channel: original.channel };
 
     this.spinnies.update(thread, {
-      text: this.renderMessages(this.threads[thread])
+      text: this.renderMessages(this.threads[thread]),
     });
   }
 
@@ -43,7 +43,7 @@ export class ConsoleManager {
     this.threads[thread].push(message);
 
     this.spinnies.update(thread, {
-      text: this.renderMessages(this.threads[thread])
+      text: this.renderMessages(this.threads[thread]),
     });
   }
 
@@ -51,7 +51,7 @@ export class ConsoleManager {
     const messages: string[] = [
       `posting to ${firstMessage.channel}`,
       this.renderMessage(firstMessage),
-      ...rests.map(message => this.renderMessage({ indent: 1, ...message }))
+      ...rests.map((message) => this.renderMessage({ indent: 1, ...message })),
     ];
 
     return messages.join("\n");
@@ -78,7 +78,7 @@ export class ConsoleManager {
       // TODO:
     }
 
-    return lines.map(line => " ".repeat(2 * (indent as number)) + line).join("\n");
+    return lines.map((line) => " ".repeat(2 * (indent as number)) + line).join("\n");
   }
 
   renderBlock(block: KnownBlock): string {

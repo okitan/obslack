@@ -1,9 +1,8 @@
+import { ChatPostMessageArguments, WebClient } from "@slack/web-api";
 import Observable from "zen-observable";
-import { WebClient, ChatPostMessageArguments } from "@slack/web-api";
 
 import { ConsoleManager } from "./consoleManager";
 import { SlackManager } from "./slackManager";
-
 import { NAND } from "./types/logical";
 import { ChatMessageBody } from "./types/slack";
 
@@ -18,12 +17,8 @@ export class ObSlack {
   constructor({
     client,
     ...args
-  }: {
-    client?: WebClient;
-  } & NAND<{ consoleManager?: ConsoleManager }, { outputToConsole: true }>) {
+  }: { client?: WebClient } & NAND<{ consoleManager?: ConsoleManager }, { outputToConsole: true }>) {
     this.client = client;
-
-    if (client) this.slackManager = new SlackManager({ client });
 
     if (args.consoleManager) {
       this.consoleManager = args.consoleManager;
@@ -37,7 +32,7 @@ export class ObSlack {
     thread,
     message,
     update = true,
-    callback
+    callback,
   }: {
     channel: string;
     thread?: string;
@@ -47,8 +42,8 @@ export class ObSlack {
   }): Promise<MessageThread> {
     const messageThread = new MessageThread({
       channel,
-      slackManager: this.slackManager,
-      consoleManager: this.consoleManager
+      slackManager: this.client && new SlackManager({ client: this.client }),
+      consoleManager: this.consoleManager,
     });
 
     if (message) {
@@ -83,17 +78,14 @@ export class MessageThread {
   constructor({
     channel,
     slackManager,
-    consoleManager
-  }: {
-    channel: string;
-    slackManager?: SlackManager;
-    consoleManager?: ConsoleManager;
-  }) {
+    consoleManager,
+  }: Pick<MessageThread, "channel" | "slackManager" | "consoleManager">) {
     this.channel = channel;
     this.slackManager = slackManager;
     this.consoleManager = consoleManager;
   }
 
+  // FIXME: init blocks others
   async init(message: ChatPostMessageArguments): Promise<void> {
     if (this.slackManager) {
       this.slackManager.createThread(message);
@@ -104,8 +96,7 @@ export class MessageThread {
       this.thread = thread.ts;
     }
 
-    // If this.thread is not undefined, thread should be returned as is
-    this.thread = this.consoleManager?.createThread({ thread: this.thread, ...message });
+    if (this.consoleManager) this.thread = this.consoleManager.createThread({ thread: this.thread, ...message });
   }
 
   async update(body: ChatMessageBody): Promise<void> {
