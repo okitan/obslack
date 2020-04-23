@@ -5,7 +5,7 @@ export function mrkdwnSection(text: string): SectionBlock {
     type: "section",
     text: {
       type: "mrkdwn",
-      text: text
-    }
+      text: text,
+    },
   };
 }

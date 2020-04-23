@@ -1,6 +1,5 @@
-import { WebClient, ChatPostMessageArguments } from "@slack/web-api";
-
-import { queue, AsyncQueue } from "async";
+import { ChatPostMessageArguments, WebClient } from "@slack/web-api";
+import { AsyncQueue, queue } from "async";
 
 import { ChatMessageBody, SuccessfulChatPostMessageResponse } from "./types/slack";
 
@@ -47,7 +46,7 @@ export class SlackManager {
         await this.client.chat.update({
           ...body,
           channel: this.channel,
-          ts: this.thread
+          ts: this.thread,
         });
       }).bind(this)
     );
@@ -59,7 +58,7 @@ export class SlackManager {
         await this.client.chat.postMessage({
           ...body,
           channel: this.channel,
-          thread_ts: this.thread
+          thread_ts: this.thread,
         });
       }).bind(this)
     );
