@@ -17,9 +17,7 @@ export class ObSlack {
   constructor({
     client,
     ...args
-  }: {
-    client?: WebClient;
-  } & NAND<{ consoleManager?: ConsoleManager }, { outputToConsole: true }>) {
+  }: { client?: WebClient } & NAND<{ consoleManager?: ConsoleManager }, { outputToConsole: true }>) {
     this.client = client;
 
     if (args.consoleManager) {
@@ -81,11 +79,7 @@ export class MessageThread {
     channel,
     slackManager,
     consoleManager,
-  }: {
-    channel: string;
-    slackManager?: SlackManager;
-    consoleManager?: ConsoleManager;
-  }) {
+  }: Pick<MessageThread, "channel" | "slackManager" | "consoleManager">) {
     this.channel = channel;
     this.slackManager = slackManager;
     this.consoleManager = consoleManager;
