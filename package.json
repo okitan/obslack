@@ -20,7 +20,7 @@
   "devDependencies": {
     "prettier": "2.0.5",
     "ts-node": "8.10.2",
-    "typescript": "3.8.3"
+    "typescript": "3.9.6"
   },
   "dependencies": {
     "@slack/web-api": "^5.8.0",
