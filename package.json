@@ -23,8 +23,8 @@
     "typescript": "3.9.6"
   },
   "dependencies": {
-    "@slack/web-api": "^5.8.0",
-    "@types/async": "^3.2.0",
+    "@slack/web-api": "^5.11.0",
+    "@types/async": "^3.2.3",
     "@types/zen-observable": "^0.8.0",
     "async": "^3.2.0",
     "spinnies": "^0.5.1",

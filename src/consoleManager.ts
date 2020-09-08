@@ -1,6 +1,7 @@
-import Spinnies from "spinnies";
+import { KnownBlock, MrkdwnElement, PlainTextElement } from "@slack/types";
 import { ChatPostMessageArguments } from "@slack/web-api";
-import { KnownBlock } from "@slack/types";
+import chalk from "chalk";
+import Spinnies from "spinnies";
 
 import { ChatMessageBody } from "./types/slack";
 
@@ -14,7 +15,7 @@ export class ConsoleManager {
   };
 
   constructor() {
-    this.spinnies = new Spinnies();
+    this.spinnies = new Spinnies({ succeedColor: "white" });
     this.threads = {};
   }
 
@@ -83,16 +84,26 @@ export class ConsoleManager {
 
   renderBlock(block: KnownBlock): string {
     switch (block.type) {
+      case "context":
+        return block.elements
+          .filter((element): element is PlainTextElement | MrkdwnElement => "text" in element)
+          .map((element) => chalk.bgWhite(element.text))
+          .join("\n");
       case "divider":
         return "-".repeat(80);
+      case "header":
+        return chalk.bold(block.text.text);
       case "section":
         // TODO: fields, accessory
         if (block.text) {
           return block.text.text;
         }
         return "";
-      default:
-        console.error(`unknown type ${block.type} found`);
+      case "actions":
+      case "file":
+      case "image":
+      case "input":
+        // nothing to render
         return "";
     }
   }
