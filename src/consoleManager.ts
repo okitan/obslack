@@ -14,8 +14,8 @@ export class ConsoleManager {
     [x: string]: Messages;
   };
 
-  constructor() {
-    this.spinnies = new Spinnies({ succeedColor: "white" });
+  constructor(sppinniesOptions: object = { succeedColor: "white" }) {
+    this.spinnies = new Spinnies(sppinniesOptions);
     this.threads = {};
   }
 
