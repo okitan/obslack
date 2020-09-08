@@ -17,13 +17,16 @@ export class ObSlack {
   constructor({
     client,
     ...args
-  }: { client?: WebClient } & NAND<{ consoleManager?: ConsoleManager }, { outputToConsole: true }>) {
+  }: { client?: WebClient } & NAND<
+    { consoleManager?: ConsoleManager },
+    { outputToConsole: true; sppiniesOptions?: object }
+  >) {
     this.client = client;
 
     if (args.consoleManager) {
       this.consoleManager = args.consoleManager;
     } else if (args.outputToConsole) {
-      this.consoleManager = new ConsoleManager();
+      this.consoleManager = args.sppiniesOptions ? new ConsoleManager(args.sppiniesOptions) : new ConsoleManager();
     }
   }
 
