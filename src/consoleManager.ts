@@ -87,7 +87,7 @@ export class ConsoleManager {
       case "context":
         return block.elements
           .filter((element): element is PlainTextElement | MrkdwnElement => "text" in element)
-          .map((element) => chalk.bgWhite(element.text))
+          .map((element) => chalk.bgWhite(chalk.black(element.text)))
           .join("\n");
       case "divider":
         return "-".repeat(80);
