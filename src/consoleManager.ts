@@ -1,4 +1,4 @@
-import { KnownBlock, MrkdwnElement, PlainTextElement } from "@slack/types";
+import { KnownBlock, MessageAttachment, MrkdwnElement, PlainTextElement } from "@slack/types";
 import { ChatPostMessageArguments } from "@slack/web-api";
 import chalk from "chalk";
 import Spinnies from "spinnies";
@@ -75,9 +75,7 @@ export class ConsoleManager {
       lines.push(message.text);
     }
 
-    if (message.attachments) {
-      // TODO:
-    }
+    if (message.attachments) lines.push(...message.attachments.map(this.renderAttachment));
 
     return lines.map((line) => " ".repeat(2 * (indent as number)) + line).join("\n");
   }
@@ -94,11 +92,12 @@ export class ConsoleManager {
       case "header":
         return chalk.bold(block.text.text);
       case "section":
-        // TODO: fields, accessory
-        if (block.text) {
-          return block.text.text;
-        }
-        return "";
+        // TODO: accessory
+        const lines: string[] = [];
+        if (block.text) lines.push(block.text.text);
+        if (block.fields) lines.push(...block.fields.map((field) => `${field.type}: ${field.text}`));
+
+        return lines.join("\n");
       case "actions":
       case "file":
       case "image":
@@ -106,6 +105,18 @@ export class ConsoleManager {
         // nothing to render
         return "";
     }
+  }
+
+  renderAttachment(attachment: MessageAttachment): string {
+    const lines = ["--------"];
+
+    if (attachment.title) lines.push(attachment.title);
+    // text will contain line break
+    if (attachment.text) lines.push(...attachment.text.split("\n"));
+
+    if (attachment.fields) lines.push(...attachment.fields.map((field) => `${field.title}: ${field.value}`));
+
+    return lines.join(`\n${chalk.bold(chalk.hex(attachment.color || "#FFFFFF")("| "))}`);
   }
 
   finish({ thread }: { thread: string }): void {
