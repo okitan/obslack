@@ -1,5 +1,10 @@
-import { KnownBlock, MessageAttachment, MrkdwnElement, PlainTextElement } from "@slack/types";
-import { ChatPostMessageArguments } from "@slack/web-api";
+import {
+  ChatPostMessageArguments,
+  KnownBlock,
+  MessageAttachment,
+  MrkdwnElement,
+  PlainTextElement,
+} from "@slack/web-api";
 import chalk from "chalk";
 import Spinnies from "spinnies";
 
