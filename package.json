@@ -4,7 +4,9 @@
   "description": "Slack Message Manager",
   "main": "lib/index.js",
   "scripts": {
-    "build": "rm -rf lib && tsc"
+    "build": "rm -rf lib && tsc --build tsconfig.build.json",
+    "example:console": "ts-node -T examples/console.ts",
+    "example:slack": "ts-node -T examples/slack.ts"
   },
   "repository": {
     "type": "git",
