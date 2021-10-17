@@ -1,4 +1,3 @@
-#!/usr/bin/env ts-node
 import { ObSlack } from "../src";
 
 (async () => {
