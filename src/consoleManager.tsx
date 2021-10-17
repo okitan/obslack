@@ -1,4 +1,4 @@
-import { Slack } from "@okian/slackink";
+import { Slack } from "@okitan/ink-slack";
 import { ChatPostMessageArguments } from "@slack/web-api";
 import { render, Text } from "ink";
 import Spinner from "ink-spinner";

@@ -20,22 +20,24 @@
   },
   "homepage": "https://github.com/okitan/obslack#readme",
   "devDependencies": {
-    "@types/react": "^17.0.30",
+    "@types/react": "17.0.30",
     "prettier": "2.4.1",
     "ts-node": "10.3.0",
     "typescript": "4.4.4"
   },
   "dependencies": {
-    "@okian/slackink": "file:../slackink",
+    "@okitan/ink-slack": "^1.0.0",
     "@slack/web-api": "^6.1.0",
     "async": "^3.2.0",
-    "ink": "^3.2.0",
     "ink-spinner": "^4.0.3",
-    "react": "^16.0.0",
     "zen-observable": "^0.8.15"
   },
   "optionalDependencies": {
     "@types/async": "^3.2.3",
     "@types/zen-observable": "^0.8.0"
+  },
+  "peerDependencies": {
+    "ink": "^3.2.0",
+    "react": "^16.0.0"
   }
 }
