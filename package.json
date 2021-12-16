@@ -23,7 +23,7 @@
     "@types/react": "17.0.37",
     "prettier": "2.5.1",
     "ts-node": "10.4.0",
-    "typescript": "4.5.3"
+    "typescript": "4.5.4"
   },
   "dependencies": {
     "@okitan/ink-slack": "^1.0.0",
