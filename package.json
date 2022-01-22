@@ -1,12 +1,17 @@
 {
   "name": "@okitan/obslack",
   "version": "1.0.0",
+  "type": "module",
   "description": "Slack Message Manager",
   "main": "lib/index.js",
+  "engines": {
+    "node": "^14.13 || >=16.0.0"
+  },
   "scripts": {
     "build": "rm -rf lib && tsc --build tsconfig.build.json",
-    "example:console": "ts-node -T examples/console.ts",
-    "example:slack": "ts-node -T examples/slack.ts"
+    "build:check": "tsc --noEmit",
+    "example:console": "node --no-warnings --loader ts-node/esm --experimental-specifier-resolution=node examples/console.ts",
+    "example:slack": "node --no-warnings --loader ts-node/esm --experimental-specifier-resolution=node examples/slack.ts"
   },
   "repository": {
     "type": "git",
@@ -26,10 +31,9 @@
     "typescript": "4.5.4"
   },
   "dependencies": {
-    "@okitan/ink-slack": "^1.0.0",
+    "@okitan/ink-slack": "^2.0.0",
     "@slack/web-api": "^6.1.0",
     "async": "^3.2.0",
-    "ink-spinner": "^4.0.3",
     "zen-observable": "^0.8.15"
   },
   "optionalDependencies": {
@@ -38,6 +42,6 @@
   },
   "peerDependencies": {
     "ink": "^3.2.0",
-    "react": "^16.8.0"
+    "react": "^17.0.2"
   }
 }

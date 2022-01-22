@@ -1,9 +1,11 @@
-import { Slack } from "@okitan/ink-slack";
-import { ChatPostMessageArguments } from "@slack/web-api";
-import { render, Text } from "ink";
-import Spinner from "ink-spinner";
 import { Fragment } from "react";
 
+import { render, Text } from "ink";
+
+import { Slack } from "@okitan/ink-slack";
+import { ChatPostMessageArguments } from "@slack/web-api";
+
+import { Spinner } from "./spinner";
 import { ChatMessageBody } from "./types/slack";
 
 type Messages = [ChatPostMessageArguments, ...ChatMessageBody[]];
@@ -55,7 +57,7 @@ export class ConsoleManager {
             {obj.state === "in progress" ? (
               <Text key={`${thread}-channel`}>
                 <Text color="green">
-                  <Spinner type="dots" />
+                  <Spinner />
                 </Text>
                 <Text> Posting to {obj.messages[0].channel}</Text>
               </Text>
