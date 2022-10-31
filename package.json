@@ -35,7 +35,7 @@
     "@okitan/ink-slack": "^2.0.0",
     "@slack/web-api": "^6.1.0",
     "async": "^3.2.0",
-    "zen-observable": "^0.8.15"
+    "zen-observable": "^0.9.0"
   },
   "optionalDependencies": {
     "@types/async": "^3.2.3",
