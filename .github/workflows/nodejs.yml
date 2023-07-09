@@ -3,41 +3,13 @@ name: Node CI
 on: [push]
 
 jobs:
-  build-with-npm6:
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: ["12", "14"]
-
-    steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: "npm"
-      - name: npm install, build, and test
-        run: |
-          npm ci
-          npm install ink react
-          npm run build
-        env:
-          CI: true
-
   build:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: ["16"]
-
     steps:
       - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 18
           cache: "npm"
       - name: npm install, build, and test
         run: |
