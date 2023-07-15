@@ -11,8 +11,8 @@
   "scripts": {
     "build": "rm -rf lib && tsc --build tsconfig.build.json",
     "build:check": "tsc --noEmit",
-    "example:console": "node --no-warnings --loader ts-node/esm --experimental-specifier-resolution=node examples/console.ts",
-    "example:slack": "node --no-warnings --loader ts-node/esm --experimental-specifier-resolution=node examples/slack.ts"
+    "example:console": "ts-node-esm examples/console.ts",
+    "example:slack": "ts-node-esm examples/slack.ts"
   },
   "repository": {
     "type": "git",
@@ -26,13 +26,13 @@
   },
   "homepage": "https://github.com/okitan/obslack#readme",
   "devDependencies": {
-    "@types/react": "17.0.62",
+    "@types/react": "18.2.15",
     "prettier": "3.0.0",
     "ts-node": "10.9.1",
     "typescript": "5.1.6"
   },
   "dependencies": {
-    "@okitan/ink-slack": "^2.0.0",
+    "@okitan/ink-slack": "^2.1.0",
     "@slack/web-api": "^6.1.0",
     "async": "^3.2.0",
     "zen-observable": "^0.10.0"
@@ -42,7 +42,7 @@
     "@types/zen-observable": "^0.8.0"
   },
   "peerDependencies": {
-    "ink": "^3.2.0",
-    "react": "^17.0.2"
+    "ink": "^4.2.0",
+    "react": "^18.2.0"
   }
 }

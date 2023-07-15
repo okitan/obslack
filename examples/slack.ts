@@ -1,7 +1,7 @@
 #!/usr/bin/env ts-node
 import { WebClient } from "@slack/web-api";
 
-import { ObSlack } from "../src";
+import { ObSlack } from "../src/index.js";
 
 (async () => {
   const obs = new ObSlack({ client: new WebClient(process.env.NODE_SLACK_API_TOKEN) });

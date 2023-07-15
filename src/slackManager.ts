@@ -1,12 +1,12 @@
 import { ChatPostMessageArguments, WebClient } from "@slack/web-api";
-import { AsyncQueue, queue } from "async";
+import { QueueObject, queue } from "async";
 
-import { ChatMessageBody, SuccessfulChatPostMessageResponse } from "./types/slack";
+import { ChatMessageBody, SuccessfulChatPostMessageResponse } from "./types/slack.js";
 
 export class SlackManager {
   client: WebClient;
 
-  queue: AsyncQueue<() => Promise<void>>;
+  queue: QueueObject<() => Promise<void>>;
   channel: string = "";
   thread: string = "";
 
@@ -26,7 +26,7 @@ export class SlackManager {
 
         this.channel = result.channel;
         this.thread = result.ts;
-      }).bind(this)
+      }).bind(this),
     );
   }
 
@@ -48,7 +48,7 @@ export class SlackManager {
           channel: this.channel,
           ts: this.thread,
         });
-      }).bind(this)
+      }).bind(this),
     );
   }
 
@@ -60,7 +60,7 @@ export class SlackManager {
           channel: this.channel,
           thread_ts: this.thread,
         });
-      }).bind(this)
+      }).bind(this),
     );
   }
 

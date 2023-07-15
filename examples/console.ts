@@ -1,4 +1,4 @@
-import { ObSlack } from "../src";
+import { ObSlack } from "../src/index.js";
 
 (async () => {
   const obs = new ObSlack({ outputToConsole: true });
