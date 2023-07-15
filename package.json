@@ -11,8 +11,8 @@
   "scripts": {
     "build": "rm -rf lib && tsc --build tsconfig.build.json",
     "build:check": "tsc --noEmit",
-    "example:console": "node --no-warnings --loader ts-node/esm --experimental-specifier-resolution=node examples/console.ts",
-    "example:slack": "node --no-warnings --loader ts-node/esm --experimental-specifier-resolution=node examples/slack.ts"
+    "example:console": "ts-node-esm examples/console.ts",
+    "example:slack": "ts-node-esm examples/slack.ts"
   },
   "repository": {
     "type": "git",
