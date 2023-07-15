@@ -5,8 +5,8 @@ import { render, Text } from "ink";
 import { Slack } from "@okitan/ink-slack";
 import { ChatPostMessageArguments } from "@slack/web-api";
 
-import { Spinner } from "./spinner";
-import { ChatMessageBody } from "./types/slack";
+import { Spinner } from "./spinner.js";
+import { ChatMessageBody } from "./types/slack.js";
 
 type Messages = [ChatPostMessageArguments, ...ChatMessageBody[]];
 
@@ -77,7 +77,7 @@ export class ConsoleManager {
             })}
           </Fragment>
         ))}
-      </>
+      </>,
     );
   }
 

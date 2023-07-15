@@ -1,13 +1,13 @@
 import { ChatPostMessageArguments, WebClient } from "@slack/web-api";
 import Observable from "zen-observable";
 
-import { ConsoleManager } from "./consoleManager";
-import { SlackManager } from "./slackManager";
-import { NAND } from "./types/logical";
-import { ChatMessageBody } from "./types/slack";
+import { ConsoleManager } from "./consoleManager.js";
+import { SlackManager } from "./slackManager.js";
+import { NAND } from "./types/logical.js";
+import { ChatMessageBody } from "./types/slack.js";
 
-export * from "./helpers/slack";
-export * from "./types/slack";
+export * from "./helpers/slack.js";
+export * from "./types/slack.js";
 
 export class ObSlack {
   client?: WebClient;
@@ -61,7 +61,7 @@ export class ObSlack {
       new Observable<ChatMessageBody>(callback).subscribe(
         update ? messageThread.update.bind(messageThread) : messageThread.follow.bind(messageThread),
         messageThread.terminate.bind(messageThread),
-        messageThread.finish.bind(messageThread)
+        messageThread.finish.bind(messageThread),
       );
     } else {
       messageThread.finish();
