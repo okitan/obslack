@@ -1,8 +1,7 @@
-import type { KnownBlock, ChatPostMessageResponse } from "@slack/web-api";
+import type { KnownBlock, ChatPostMessageResponse, MessageAttachment } from "@slack/web-api";
 
 // message without metadata
-// XXX: no suuport of attachments
-export type ChatMessageBody = { text: string } | { blocks: KnownBlock[] };
+export type ChatMessageBody = { text: string } | { blocks: KnownBlock[] } | { attachments: MessageAttachment[] };
 
 // See: https://api.slack.com/methods/chat.postMessage
 export type SuccessfulChatPostMessageResponse = Omit<Required<ChatPostMessageResponse>, "error" | "errors"> & {
