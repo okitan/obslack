@@ -1,6 +1,6 @@
 {
   "name": "@okitan/obslack",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "type": "module",
   "description": "Slack Message Manager",
   "exports": "./lib/index.js",
