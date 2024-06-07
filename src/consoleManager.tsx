@@ -3,10 +3,10 @@ import { Fragment } from "react";
 import { render, Text } from "ink";
 
 import { Slack } from "@okitan/ink-slack";
-import { ChatPostMessageArguments } from "@slack/web-api";
+import type { Block, ChatPostMessageArguments, KnownBlock } from "@slack/web-api";
 
 import { Spinner } from "./spinner.js";
-import { ChatMessageBody } from "./types/slack.js";
+import type { ChatMessageBody } from "./types/slack.js";
 
 type Messages = [ChatPostMessageArguments, ...ChatMessageBody[]];
 
@@ -69,11 +69,18 @@ export class ConsoleManager {
               <Text key={`${thread}-channel`}>✅ Posted to {obj.messages[0].channel}</Text>
             )}
             {obj.messages.map((message, i) => {
-              return message.blocks ? (
-                <Slack key={`${thread}-${i}`}>{message.blocks}</Slack>
-              ) : (
-                <Text key={`${thread}-${i}`}>{message.text}</Text>
-              );
+              if ("blocks" in message) {
+                function assertKnownBlocks(blocks: Block[]): asserts blocks is KnownBlock[] {
+                  // TODO: more strict validation
+                }
+                assertKnownBlocks(message.blocks);
+
+                return <Slack key={`${thread}-${i}`}>{message.blocks}</Slack>;
+              } else if ("text" in message) {
+                return <Text key={`${thread}-${i}`}>{message.text}</Text>;
+              } else {
+                return null;
+              }
             })}
           </Fragment>
         ))}
