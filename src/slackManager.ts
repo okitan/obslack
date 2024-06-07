@@ -1,7 +1,7 @@
-import { ChatPostMessageArguments, WebClient } from "@slack/web-api";
+import type { ChatPostMessageArguments, WebClient } from "@slack/web-api";
 import { QueueObject, queue } from "async";
 
-import { ChatMessageBody, SuccessfulChatPostMessageResponse } from "./types/slack.js";
+import { type ChatMessageBody, assertSuccessfulResponse } from "./types/slack.js";
 
 export class SlackManager {
   client: WebClient;
@@ -22,7 +22,8 @@ export class SlackManager {
   createThread(message: ChatPostMessageArguments) {
     this.queue.push(
       (async () => {
-        const result = (await this.client.chat.postMessage(message)) as SuccessfulChatPostMessageResponse;
+        const result = await this.client.chat.postMessage(message);
+        assertSuccessfulResponse(result);
 
         this.channel = result.channel;
         this.thread = result.ts;

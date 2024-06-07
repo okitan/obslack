@@ -11,8 +11,8 @@
   "scripts": {
     "build": "rm -rf lib && tsc --build tsconfig.build.json",
     "build:check": "tsc --noEmit",
-    "example:console": "ts-node-esm examples/console.ts",
-    "example:slack": "ts-node-esm examples/slack.ts"
+    "example:console": "node --loader=tsimp/loader examples/console.ts",
+    "example:slack": "node --loader=tsimp/loader examples/slack.ts"
   },
   "repository": {
     "type": "git",
@@ -28,21 +28,17 @@
   "devDependencies": {
     "@types/react": "18.3.3",
     "prettier": "3.3.0",
-    "ts-node": "10.9.2",
-    "typescript": "5.1.6"
+    "tsimp": "2.0.11",
+    "typescript": "5.4.5"
   },
   "dependencies": {
-    "@okitan/ink-slack": "^2.1.0",
-    "@slack/web-api": "^6.1.0",
+    "@okitan/ink-slack": "^2.2.0",
+    "@slack/web-api": "^7.0.0",
     "async": "^3.2.0",
     "zen-observable": "^0.10.0"
   },
   "optionalDependencies": {
     "@types/async": "^3.2.3",
     "@types/zen-observable": "^0.8.0"
-  },
-  "peerDependencies": {
-    "ink": "^4.2.0 || ^5.0.0",
-    "react": "^18.2.0"
   }
 }
