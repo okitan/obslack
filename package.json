@@ -26,7 +26,7 @@
   },
   "homepage": "https://github.com/okitan/obslack#readme",
   "devDependencies": {
-    "@types/react": "18.3.5",
+    "@types/react": "18.3.6",
     "prettier": "3.3.3",
     "tsimp": "2.0.11",
     "typescript": "5.6.2"
