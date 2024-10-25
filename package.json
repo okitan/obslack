@@ -28,7 +28,7 @@
   "devDependencies": {
     "@types/react": "18.3.11",
     "prettier": "3.3.3",
-    "tsimp": "2.0.11",
+    "tsimp": "2.0.12",
     "typescript": "5.6.3"
   },
   "dependencies": {
