@@ -29,7 +29,7 @@
     "@types/react": "19.2.14",
     "prettier": "3.8.3",
     "tsimp": "2.0.12",
-    "typescript": "5.9.3"
+    "typescript": "6.0.3"
   },
   "dependencies": {
     "@okitan/ink-slack": "^2.2.0",
